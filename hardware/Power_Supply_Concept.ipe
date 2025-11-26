@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.29">
-<info created="D:20251126132551" modified="D:20251126143903"/>
+<info created="D:20251126132551" modified="D:20251126153247"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -457,5 +457,52 @@ h
 <text matrix="1 0 0 1 -19.5283 -1.87772" transformations="translations" pos="503.673 472.003" stroke="black" type="label" width="62.267" height="6.808" depth="0" valign="baseline">Imax = 50mA</text>
 <text matrix="1 0 0 1 7.51087 -8.6375" transformations="translations" pos="480.765 574.151" stroke="black" type="label" width="48.706" height="6.808" depth="0" valign="baseline">I = 200mA</text>
 <text matrix="1 0 0 1 -5.63315 -4.88206" transformations="translations" pos="487.525 560.256" stroke="black" type="label" width="67.248" height="6.808" depth="0" valign="baseline">Imax = 250mA</text>
+<path matrix="1.2 0 0 1 99.2 -256" stroke="black">
+64 784 m
+64 736 l
+144 736 l
+144 784 l
+h
+</path>
+<text transformations="translations" pos="192 496" stroke="black" type="label" width="57.123" height="14.349" depth="0" valign="baseline" size="huge">Enable</text>
+<path matrix="1 0 0 1 96 48" stroke="black">
+256 416 m
+288 400 l
+256 384 l
+256 416 l
+256 416 l
+256 416 l
+</path>
+<path matrix="1 0 0 1 96 48" stroke="black">
+288 416 m
+288 384 l
+288 384 l
+288 384 l
+</path>
+<path stroke="black" rarrow="normal/normal">
+224.101 480 m
+224 416 l
+480 416 l
+480.02 480 l
+480.02 480 l
+480.02 480 l
+480.02 480 l
+</path>
+<path stroke="black" rarrow="normal/normal">
+223.399 576 m
+223.75 528 l
+223.75 528 l
+223.75 528 l
+223.75 528 l
+</path>
+<path stroke="black" rarrow="normal/normal">
+431.91 504.927 m
+432 448 l
+80 448 l
+80.5201 576 l
+80.5201 576 l
+80.5201 576 l
+80.5201 576 l
+</path>
 </page>
 </ipe>
