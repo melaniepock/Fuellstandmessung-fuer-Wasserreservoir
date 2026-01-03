@@ -1,8 +1,10 @@
 const API_URL = "http://127.0.0.1:5000/data";
 
 let rawData = [];
+let refreshTimerId = null;
 
 const tableBody = document.getElementById("data-table-body");
+const refreshSelect = document.getElementById("refresh-interval-select");
 
 async function getData() {
     console.log("getData()");
@@ -13,6 +15,7 @@ async function getData() {
         timestamp: Number(r.timestamp),
         value: Number(r.value)
       }));
+      
     renderTable();
 }
 
@@ -33,5 +36,19 @@ function renderTable() {
     tableBody.appendChild(tr);
   }
 }
+
+function setAutoRefresh() {
+  console.log("setAutoRefresh()");
+  const interval = parseInt(refreshSelect.value, 10);
+  if (refreshTimerId) {
+    clearInterval(refreshTimerId);
+    refreshTimerId = null;
+  }
+  if (interval > 0) {
+    refreshTimerId = setInterval(getData, interval);
+  }
+}
+
+refreshSelect.addEventListener("change", setAutoRefresh);
 
 getData();

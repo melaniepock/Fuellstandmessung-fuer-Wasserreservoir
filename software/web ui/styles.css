@@ -5,6 +5,7 @@ body {
   background: #020617;
   width: 100%;
   max-width: 1400px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 h1 {
@@ -12,17 +13,46 @@ h1 {
   font-size: 2rem;
 }
 
-button {
+button, select {
   padding: 10px 15px;
   cursor: pointer;
-  background: #3b82f6;
   color: white;
+  border-radius: 999px;
+  border: 1px solid #020617;
+}
+
+button {
+  background: #3b82f6;
+}
+ 
+select {
+  background: none;
+  border: 1px solid #1f2937;
+}
+
+option {
+  color: black;
 }
 
 table {
   width: 100%;
+  border-collapse: collapse;
 }
 
 th {
   background: #00183e;
+}
+
+th,
+td {
+  padding: 10px 15px;
+  border: 1px solid #1f2937;
+}
+
+.load-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }

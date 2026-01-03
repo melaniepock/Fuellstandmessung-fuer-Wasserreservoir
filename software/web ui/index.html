@@ -12,7 +12,19 @@
 <body>
   <h1>Füllstandmessung für Wasserreservoir</h1>
   <br />
+  
+  <div class="load-container">
   <button onclick="getData()">Jetzt laden</button>
+    <span>Auto-Refresh:</span>
+        <select id="refresh-interval-select">
+          <option value="0">Aus</option>
+          <option value="1000">1s</option>
+          <option value="30000">30s</option>
+          <option value="60000" selected>1 min</option>
+          <option value="300000">5 min</option>
+        </select>
+        <span id="status"></span>
+  </div>
 
   <h2>Daten</h2>
 
