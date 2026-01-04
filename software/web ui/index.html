@@ -12,10 +12,9 @@
 
 <body>
   <h1>Füllstandmessung für Wasserreservoir</h1>
-  <br />
   
   <div class="load-container">
-  <button onclick="getData()">Jetzt laden</button>
+    <button onclick="getData()">Jetzt laden</button>
     <span>Auto-Refresh:</span>
         <select id="refresh-interval-select">
           <option value="0">Aus</option>
@@ -27,25 +26,26 @@
         <span id="status"></span>
   </div>
 
-  <h2>Daten</h2>
+  <div class="grid">
 
-  <table>
-    <thead>
-      <tr>
-        <th>Datum</th>
-        <th>Wasserstand in Liter</th>
-      </tr>
-    </thead>
-    <tbody id="data-table-body">
+    <table>
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Wasserstand in Liter</th>
+        </tr>
+      </thead>
+      <tbody id="data-table-body">
 
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <h2>Chart</h2>
+    <div>
+      <canvas id="water-chart"></canvas>
+    </div>
 
-  <div>
-    <canvas id="water-chart"></canvas>
   </div>
+
 
 </body>
 

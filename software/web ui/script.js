@@ -9,7 +9,6 @@ const refreshSelect = document.getElementById("refresh-interval-select");
 const chartCanvas = document.getElementById('water-chart');
 
 async function getData() {
-    console.log("getData()");
     const response = await fetch(API_URL);
     const json = await response.json();
     rawData = json
@@ -41,9 +40,6 @@ function renderTable() {
 }
 
 function setAutoRefresh() {
-  
-  console.log(Math.floor(Math.random() * 2));
-  console.log("setAutoRefresh()");
   const interval = parseInt(refreshSelect.value, 10);
   if (refreshTimerId) {
     clearInterval(refreshTimerId);
@@ -75,10 +71,30 @@ function renderChart() {
     },
     options: {
       scales: {
+        x: {
+          ticks: {
+            font: {
+              size: 16
+            }
+          }
+        },
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          grid: { color: "#1f2937" },
+          ticks: {
+            font: {
+              size: 16
+            }
+          }
         }
-      }
+      },
+      plugins: {
+          tooltip: {
+            mode: "index",
+            intersect: false
+          }
+
+        }
     }
   });
 }
