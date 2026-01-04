@@ -3,7 +3,7 @@ import os
 import csv
 from flask_cors import CORS
 
-FILE_PATH = "testData.csv"
+FILE_PATH = "dataFiles/testData.csv"
 
 app = Flask(__name__)
 CORS(app)
