@@ -1,10 +1,12 @@
 const API_URL = "http://127.0.0.1:5000/data";
 
+
 let rawData = [];
 let refreshTimerId = null;
 
 const tableBody = document.getElementById("data-table-body");
 const refreshSelect = document.getElementById("refresh-interval-select");
+const chartCanvas = document.getElementById('water-chart');
 
 async function getData() {
     console.log("getData()");
@@ -17,6 +19,7 @@ async function getData() {
       }));
       
     renderTable();
+    renderChart();
 }
 
 function renderTable() {
@@ -38,6 +41,8 @@ function renderTable() {
 }
 
 function setAutoRefresh() {
+  
+  console.log(Math.floor(Math.random() * 2));
   console.log("setAutoRefresh()");
   const interval = parseInt(refreshSelect.value, 10);
   if (refreshTimerId) {
@@ -48,6 +53,36 @@ function setAutoRefresh() {
     refreshTimerId = setInterval(getData, interval);
   }
 }
+
+function renderChart() {
+
+  const labels = rawData.map(item =>
+    new Date(item.timestamp * 1000).toLocaleTimeString()
+  );
+  const values = rawData.map(item => item.value);
+
+  new Chart(chartCanvas, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Wasserstand in Liter',
+        data: values,
+        borderWidth: 1,
+        responsive: true,
+        maintainAspectRatio: false,
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
 
 refreshSelect.addEventListener("change", setAutoRefresh);
 
