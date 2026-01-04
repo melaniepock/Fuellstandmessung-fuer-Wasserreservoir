@@ -3,6 +3,7 @@ const API_URL = "http://127.0.0.1:5000/data";
 
 let rawData = [];
 let refreshTimerId = null;
+let chart = null;
 
 const tableBody = document.getElementById("data-table-body");
 const refreshSelect = document.getElementById("refresh-interval-select");
@@ -57,46 +58,52 @@ function renderChart() {
   );
   const values = rawData.map(item => item.value);
 
-  new Chart(chartCanvas, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Wasserstand in Liter',
-        data: values,
-        borderWidth: 1,
-        responsive: true,
-        maintainAspectRatio: false,
-      }]
-    },
-    options: {
-      scales: {
-        x: {
-          ticks: {
-            font: {
-              size: 16
+  if (!chart) {
+    chart = new Chart(chartCanvas, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Wasserstand in Liter',
+          data: values,
+          borderWidth: 1,
+          responsive: true,
+          maintainAspectRatio: false,
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            ticks: {
+              font: {
+                size: 16
+              }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: { color: "#1f2937" },
+            ticks: {
+              font: {
+                size: 16
+              }
             }
           }
         },
-        y: {
-          beginAtZero: true,
-          grid: { color: "#1f2937" },
-          ticks: {
-            font: {
-              size: 16
+        plugins: {
+            tooltip: {
+              mode: "index",
+              intersect: false
             }
-          }
-        }
-      },
-      plugins: {
-          tooltip: {
-            mode: "index",
-            intersect: false
-          }
 
-        }
-    }
-  });
+          }
+      }
+    });
+  } else {
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = values;
+    chart.update();
+  }
 }
 
 
