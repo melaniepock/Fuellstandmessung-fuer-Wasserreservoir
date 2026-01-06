@@ -51,6 +51,21 @@ td {
   border: 1px solid #1f2937;
 }
 
+.table {
+  height: 55vh;
+  overflow-y: scroll;
+  overflow: auto;
+  scrollbar-color: #1f2937 #00183e;
+  scrollbar-width: thin;
+
+}
+
+.border-div {
+  border-radius: 15px;
+  padding: 15px;
+  border: 1px solid #1f2937;
+}
+
 .load-container {
   display: flex;
   align-items: center;
@@ -65,4 +80,16 @@ td {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  padding: 20px;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
 }

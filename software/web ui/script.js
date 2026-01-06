@@ -75,8 +75,12 @@ function renderChart() {
         scales: {
           x: {
             ticks: {
+              color: "white",
+              maxRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: 6,
               font: {
-                size: 16
+                size: 11
               }
             }
           },
@@ -84,8 +88,9 @@ function renderChart() {
             beginAtZero: true,
             grid: { color: "#1f2937" },
             ticks: {
+              color: "white",
               font: {
-                size: 16
+                size: 11
               }
             }
           }
@@ -94,8 +99,13 @@ function renderChart() {
             tooltip: {
               mode: "index",
               intersect: false
+            },
+            legend: {
+              labels: {
+                color: "white",
+                font: { size: 11 }
+              }
             }
-
           }
       }
     });
