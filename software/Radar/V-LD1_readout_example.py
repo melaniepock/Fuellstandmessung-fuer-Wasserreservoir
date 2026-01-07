@@ -35,7 +35,7 @@ from collections import namedtuple
 import matplotlib.pyplot as plt
 
 # Serial communication settings
-SERIAL_PORT = 'COM6'  # Replace with your serial port
+SERIAL_PORT = 'COM3'  # Replace with your serial port
 
 # Define the bit field to enable RADC, RFFT, PDAT, and DONE
 bit_field = 0b00100111  # Change to your needs
