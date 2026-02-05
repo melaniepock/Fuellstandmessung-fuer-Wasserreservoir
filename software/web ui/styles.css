@@ -1,8 +1,8 @@
 body {
-  color: white;
+  color: rgb(255, 255, 255);/*white*/
   margin: 0 auto;
   font-size: 1rem;
-  background: #020617;
+  background: #020617; /*#020617*/
   width: 100%;
   max-width: 1600px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -42,7 +42,7 @@ table {
 }
 
 th {
-  background: #00183e;
+  background: #00183e; /* #00183e*/
 }
 
 th,
@@ -55,7 +55,7 @@ td {
   height: 55vh;
   overflow-y: scroll;
   overflow: auto;
-  scrollbar-color: #1f2937 #00183e;
+  scrollbar-color: #1f2937 #00183e; /*#1f2937 #00183e*/
   scrollbar-width: thin;
 
 }

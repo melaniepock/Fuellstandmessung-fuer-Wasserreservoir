@@ -64,7 +64,7 @@ function renderChart() {
       data: {
         labels: labels,
         datasets: [{
-          label: 'Wasserstand in Liter',
+          label: 'Wasserstand in m³',
           data: values,
           borderWidth: 1,
           responsive: true,
@@ -75,7 +75,7 @@ function renderChart() {
         scales: {
           x: {
             ticks: {
-              color: "white",
+              color: "white", //white
               maxRotation: 0,
               autoSkip: true,
               maxTicksLimit: 6,
@@ -86,9 +86,9 @@ function renderChart() {
           },
           y: {
             beginAtZero: true,
-            grid: { color: "#1f2937" },
+            grid: { color: "#1f2937" }, //"#1f2937"
             ticks: {
-              color: "white",
+              color: "white", //white
               font: {
                 size: 11
               }
@@ -102,7 +102,7 @@ function renderChart() {
             },
             legend: {
               labels: {
-                color: "white",
+                color: "white", //white
                 font: { size: 11 }
               }
             }
