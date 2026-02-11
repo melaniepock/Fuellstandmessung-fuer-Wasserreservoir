@@ -10,8 +10,14 @@ import struct
 import time
 from collections import namedtuple
 
+import csv
+from datetime import datetime
+
+import pandas as pd
+
 # Serial communication settings
 SERIAL_PORT = 'COM3'  # Replace with your serial port
+CSV_FILE = 'radar_data.csv'
 
 # Define the bit field:
 # Bit 0 (RADC)
@@ -23,6 +29,8 @@ bit_field = 0b00100100
 
 # Global serial object
 ser = None
+
+csv_header_written = False
 
 # RadarParameters 
 RadarParameters = namedtuple("RadarParameters", [
@@ -39,6 +47,24 @@ RadarParameters = namedtuple("RadarParameters", [
     "chirp_integration_count",
     "short_range_distance_filter"
 ])
+
+def write_csv_header():
+    """Schreibt CSV-Header falls noch nicht vorhanden"""
+    global csv_header_written
+    with open(CSV_FILE, mode='a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['timestamp_unix', 'frame_number', 'distance_m', 'magnitude_dB'])
+    csv_header_written = True
+
+def log_radar_data(frame_number, pdat_data):
+    """Loggt PDAT-Daten mit Timestamp in CSV"""
+    # ts_iso = datetime.now().isoformat(timespec='milliseconds')
+    ts_unix = time.time()
+    
+    with open(CSV_FILE, mode='a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        for target in pdat_data:
+            writer.writerow([ts_unix, frame_number, target['Distance'], target['Magnitude']])
 
 
 def open_serial_connection():
@@ -285,6 +311,8 @@ def send_gnfd_command(bit_field, timeout_seconds=1):
 if __name__ == "__main__":
     open_serial_connection()  # Open serial connection to the sensor
 
+    write_csv_header()
+
     # Example usage:
     if initialize_sensor(baud_rate=3):  # Initialize sensor with 2M baud rate
 
@@ -311,6 +339,7 @@ if __name__ == "__main__":
 
                 if 'DONE' in response_data:
                     frame_number = response_data['DONE']
+                    log_radar_data(frame_number, pdat_data)
                     print("OK: Received DONE data - Frame Number:", frame_number)
                     # Process DONE data (frame number)
 
@@ -319,6 +348,15 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print("-----------------------------------------------------------------------------")
             print("Stopping data acquisition...")
+
+        print("Konvertiere CSV zu Excel...")
+        try:
+            df = pd.read_csv(CSV_FILE)
+            excel_file = CSV_FILE.replace('.csv', '.xlsx')
+            df.to_excel(excel_file, index=False, sheet_name='Radar Data')
+            print(f"Excel-Datei erstellt: {excel_file}")
+        except Exception as e:
+            print(f"Excel-Export fehlgeschlagen: {e}")
 
         # Disconnect from the sensor
         time.sleep(0.1)
