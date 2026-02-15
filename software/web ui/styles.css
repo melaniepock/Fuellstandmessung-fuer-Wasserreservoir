@@ -1,8 +1,17 @@
+:root {
+  --bg: #020617;
+  --th: #00183e;
+  --border: #1f2937;
+  --button: #3b82f6;
+  --scroll: #00183e;
+  --text: white;
+}
+
 body {
-  color: rgb(255, 255, 255);/*white*/
+  color: var(--text);
   margin: 0 auto;
   font-size: 1rem;
-  background: #020617; /*#020617*/
+  background: var(--bg);
   width: 100%;
   max-width: 1600px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -20,16 +29,17 @@ button, select {
   cursor: pointer;
   color: white;
   border-radius: 999px;
-  border: 1px solid #020617;
+  border: 1px solid var(--bg); 
+  /* todo: check if not border */
 }
 
 button {
-  background: #3b82f6;
+  background: var(--button);
 }
  
-select {
+.transparent {
   background: none;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--border);
 }
 
 option {
@@ -42,20 +52,20 @@ table {
 }
 
 th {
-  background: #00183e; /* #00183e*/
+  background: var(--th);
 }
 
 th,
 td {
   padding: 10px 15px;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--border);
 }
 
 .table {
   height: 55vh;
   overflow-y: scroll;
   overflow: auto;
-  scrollbar-color: #1f2937 #00183e; /*#1f2937 #00183e*/
+  scrollbar-color: var(--border) var(--scroll); /*#1f2937 #00183e*/
   scrollbar-width: thin;
 
 }
@@ -63,7 +73,7 @@ td {
 .border-div {
   border-radius: 15px;
   padding: 15px;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--border);
 }
 
 .load-container {

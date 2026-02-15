@@ -2,12 +2,15 @@ const API_URL = "http://127.0.0.1:5000/data";
 
 
 let rawData = [];
+let filteredData = [];
 let refreshTimerId = null;
 let chart = null;
 
 const tableBody = document.getElementById("data-table-body");
 const refreshSelect = document.getElementById("refresh-interval-select");
 const chartCanvas = document.getElementById('water-chart');
+const dateFrom = document.getElementById('dateFrom');
+const dateUntil = document.getElementById('dateUntil');
 
 async function getData() {
     const response = await fetch(API_URL);
@@ -17,6 +20,13 @@ async function getData() {
         timestamp: Number(r.timestamp),
         value: Number(r.value)
       }));
+
+    const from = dateFrom.value ? new Date(dateFrom.value).getTime() / 1000 : -Infinity;
+    const until = dateUntil.value ? new Date(dateUntil.value).getTime() / 1000 : Infinity;
+
+    filteredData = rawData.filter(r => {
+      return r.timestamp >= from && r.timestamp <= until;
+    })
       
     renderTable();
     renderChart();
@@ -24,7 +34,7 @@ async function getData() {
 
 function renderTable() {
   tableBody.innerHTML = "";
-  for (const item of rawData) {
+  for (const item of filteredData) {
     const tr = document.createElement("tr");
 
     const dateCell = document.createElement("td");
@@ -53,10 +63,10 @@ function setAutoRefresh() {
 
 function renderChart() {
 
-  const labels = rawData.map(item =>
+  const labels = filteredData.map(item =>
     new Date(item.timestamp * 1000).toLocaleTimeString()
   );
-  const values = rawData.map(item => item.value);
+  const values = filteredData.map(item => item.value);
 
   if (!chart) {
     chart = new Chart(chartCanvas, {
@@ -114,6 +124,12 @@ function renderChart() {
     chart.data.datasets[0].data = values;
     chart.update();
   }
+}
+
+function clearDates() {
+  dateFrom.value = '';
+  dateUntil.value = '';
+  getData();
 }
 
 

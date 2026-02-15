@@ -16,7 +16,7 @@
   <div class="load-container">
     <button onclick="getData()">Jetzt laden</button>
     <span>Auto-Refresh:</span>
-        <select id="refresh-interval-select">
+        <select id="refresh-interval-select" class="transparent">
           <option value="0">Aus</option>
           <option value="1000">1s</option>
           <option value="30000">30s</option>
@@ -24,6 +24,14 @@
           <option value="300000">5 min</option>
         </select>
         <span id="status"></span>
+  </div>
+
+  <div class="load-container">
+    <span>Zeitraum:</span>
+    <input type="date" name="dateFrom" id="dateFrom">
+    <span>bis</span>
+    <input type="date" name="dateUntil" id="dateUntil">
+    <button class="transparent" onclick="clearDates()">Datum leeren</button>
   </div>
 
   <div class="grid">
@@ -50,7 +58,5 @@
 
   </div>
 
-
 </body>
-
 </html>
