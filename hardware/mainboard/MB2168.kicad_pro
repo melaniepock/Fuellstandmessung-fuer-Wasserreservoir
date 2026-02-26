@@ -842,7 +842,11 @@
         "uuid": "597988b1-a89e-405d-b40d-bda166e02990"
       }
     ],
+<<<<<<< HEAD
     "used_designators": "D1-4,#PWR77-104,C3,C7,C24-25,C27-47,H1-4,R9-17,J1,J3,Pins_Batterie1,U2-5,L11-18",
+=======
+    "used_designators": "",
+>>>>>>> b89bf53aee5b681ccb6b9d81e4fba329657f54af
     "variants": []
   },
   "sheets": [

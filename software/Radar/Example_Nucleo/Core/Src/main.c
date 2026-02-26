@@ -114,14 +114,15 @@ bool read_message(char header[5], uint8_t *payload, uint32_t *payload_len, uint3
 	    }*/
 
 	 uint8_t hdr[4];
-	    uint8_t len_bytes[4];
+	 uint8_t len_bytes[4];
 
 	    // 4-Byte Header lesen
-	    if (Sensor_Recv(hdr, 4) != HAL_OK)
-	    {
+	    Sensor_Recv(hdr, 4);
+/*	    {
 	        Debug_Print("read_message: header recv failed\r\n");
 	        return false;
-	    }
+	    }*/
+
 
 	    header[0] = (char)hdr[0];
 	    header[1] = (char)hdr[1];
@@ -129,10 +130,11 @@ bool read_message(char header[5], uint8_t *payload, uint32_t *payload_len, uint3
 	    header[3] = (char)hdr[3];
 	    header[4] = '\0';
 
+
 	    // 4-Byte Länge lesen (Little Endian)
 	    if (Sensor_Recv(len_bytes, 4) != HAL_OK)
 	    {
-	        Debug_Print("read_message: length recv failed\r\n");
+	        //Debug_Print("read_message: length recv failed\r\n");
 	        return false;
 	    }
 
@@ -141,11 +143,11 @@ bool read_message(char header[5], uint8_t *payload, uint32_t *payload_len, uint3
 	                 | ((uint32_t)len_bytes[2] << 16)
 	                 | ((uint32_t)len_bytes[3] << 24);
 
-	    if (len > max_payload)
+/*	    if (len > max_payload)
 	    {
 	        Debug_Print("read_message: payload too big\r\n");
 	        return false;
-	    }
+	    }*/
 
 	    if (len > 0)
 	    {
@@ -195,7 +197,7 @@ bool read_message(char header[5], uint8_t *payload, uint32_t *payload_len, uint3
 
 int send_command(const char *header, const uint8_t *payload, uint32_t payload_len)
 {
-    uint8_t hdr_len[8];
+    uint8_t hdr_len[9];
     uint8_t len_bytes[4];
 
     // 4-Byte Header
@@ -211,25 +213,27 @@ int send_command(const char *header, const uint8_t *payload, uint32_t payload_le
     len_bytes[3] = (uint8_t)((payload_len >> 24) & 0xFF);
 
     memcpy(&hdr_len[4], len_bytes, 4);
+    hdr_len[8] = 0;
 
     Debug_Print("send INIT\r\n");
 
-    if (Sensor_Send(hdr_len, 8) != HAL_OK)
+    if (Sensor_Send(hdr_len, 9) != HAL_OK)
             return -1;
-    Debug_Print("INIT header sent\r\n");
+    //Debug_Print("INIT header sent\r\n");
 
-        if (payload_len > 0)
+/*        if (payload_len > 0)
         {
             if (Sensor_Send(payload, (uint16_t)payload_len) != HAL_OK)
                 return -1;
         }
-    Debug_Print("INIT payload sent\r\n");
+    Debug_Print("INIT payload sent\r\n");*/
 
         // RESP lesen
         char resp_header[5];
         uint8_t resp_payload[8];
         uint32_t resp_len = 0;
 
+        //HAL_Delay(10);
         if (!read_message(resp_header, resp_payload, &resp_len, sizeof(resp_payload))){
         	 Debug_Print("send_command: no RESP frame\r\n");
         	 return -1;
@@ -257,14 +261,12 @@ bool initialize_sensor(uint8_t baud_index)
 	    if (baud_index > 3)
 	        return false;
 
-
-
 	    uint8_t payload = baud_index;
 	    int err = send_command("INIT", &payload, 1);
 	    if (err != 0)
 	        return false;
 
-	    Debug_Print("OK: INIT sent\r\n");
+	    //Debug_Print("OK: INIT sent\r\n");
 
 
     // VERS lesen
@@ -272,8 +274,9 @@ bool initialize_sensor(uint8_t baud_index)
 	       uint8_t pld[64];
 	       uint32_t len = 0;
 
-	       if (read_message(hdr, pld, &len, sizeof(pld)))
-	       {
+	       //if (read_message(hdr, pld, &len, sizeof(pld)))
+	       read_message(hdr, pld, &len, sizeof(pld));
+	       //{
 	           if (strcmp(hdr, "VERS") == 0)
 	           {
 	               if (len < sizeof(pld))
@@ -286,7 +289,7 @@ bool initialize_sensor(uint8_t baud_index)
 	           {
 	               Debug_Print("Unexpected header instead of VERS\r\n");
 	           }
-	       }
+	       //}
 
 
             huart1.Init.BaudRate = valid_baud[baud_index];
@@ -500,8 +503,8 @@ int main(void)
 
 	      HAL_Delay(500);*/
 
-	  get_next_frame_pdat_done(BITFIELD_PDAT_DONE);
-	  HAL_Delay(00);
+	  //get_next_frame_pdat_done(BITFIELD_PDAT_DONE);
+	  //HAL_Delay(00);
 
 	  //HAL_UART_Transmit(&huart2, (uint8_t*)"TEST\r\n", 6, 1000);
 	      //HAL_Delay(500);
@@ -528,23 +531,16 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 
-  /** Configure LSE Drive Capability
-  */
-  HAL_PWR_EnableBkUpAccess();
-  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
-
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
-  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
-  RCC_OscInitStruct.MSICalibrationValue = 0;
-  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 1;
-  RCC_OscInitStruct.PLL.PLLN = 16;
+  RCC_OscInitStruct.PLL.PLLN = 10;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -562,14 +558,10 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
   {
     Error_Handler();
   }
-
-  /** Enable MSI Auto calibration
-  */
-  HAL_RCCEx_EnableMSIPLLMode();
 }
 
 /* USER CODE BEGIN 4 */
