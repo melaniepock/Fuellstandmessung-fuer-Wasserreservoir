@@ -1,0 +1,6 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "Library") (type "KiCad") (uri "${KIPRJMOD}/Library.pretty") (options "") (descr ""))
+	(lib (name "hw") (type "KiCad") (uri "C:/da/hw.pretty") (options "") (descr ""))
+	(lib (name "hw") (type "KiCad") (uri "${KIPRJMOD}/hw.pretty") (options "") (descr ""))
+)
