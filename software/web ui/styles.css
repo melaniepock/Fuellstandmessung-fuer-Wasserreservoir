@@ -24,6 +24,12 @@ h1 {
   text-align: center;
 }
 
+#calculation-values {
+  margin: 0;
+  padding-top: 10px;
+  text-align: center;
+}
+
 button, select {
   padding: 10px 15px;
   cursor: pointer;

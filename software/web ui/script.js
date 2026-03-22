@@ -1,5 +1,10 @@
-const API_URL = "http://127.0.0.1:5000/data";
+const SUPABASE_URL = window.ENV.SUPABASE_URL;
+const SUPABASE_KEY = window.ENV.SUPABASE_KEY;
+const EMAIL = window.ENV.EMAIL;
+const PASSWORD = window.ENV.PASSWORD;
 
+const RADIUS = 3.55;
+const HEIGHT = 3;
 
 let rawData = [];
 let filteredData = [];
@@ -11,18 +16,26 @@ const refreshSelect = document.getElementById("refresh-interval-select");
 const chartCanvas = document.getElementById('water-chart');
 const dateFrom = document.getElementById('dateFrom');
 const dateUntil = document.getElementById('dateUntil');
+const calculationValues = document.getElementById('calculation-values');
 
 async function getData() {
-    const response = await fetch(API_URL);
-    const json = await response.json();
-    rawData = json
-      .map(r => ({
-        timestamp: Number(r.timestamp),
-        value: Number(r.value)
+
+  const { data, error } = await client
+        .from('water_levels')
+        .select()
+        .order('measure_date', { ascending: false });
+
+    console.log(data)
+
+    rawData = data.map(r => ({
+        timestamp: new Date(r.measure_date).getTime(),
+        value: Math.round(((HEIGHT - Number(r.distance)) * Math.pow(RADIUS, 2) * Math.PI) * 10) / 10
       }));
 
-    const from = dateFrom.value ? new Date(dateFrom.value).getTime() / 1000 : -Infinity;
-    const until = dateUntil.value ? new Date(dateUntil.value).getTime() / 1000 : Infinity;
+    console.log(rawData);
+
+    const from = dateFrom.value ? new Date(dateFrom.value).getTime() : -Infinity;
+    const until = dateUntil.value ? new Date(dateUntil.value).getTime() : Infinity;
 
     filteredData = rawData.filter(r => {
       return r.timestamp >= from && r.timestamp <= until;
@@ -38,7 +51,7 @@ function renderTable() {
     const tr = document.createElement("tr");
 
     const dateCell = document.createElement("td");
-    const date = new Date(item.timestamp * 1000);
+    const date = new Date(item.timestamp);
     dateCell.textContent = date.toLocaleString();
 
     const valueCell = document.createElement("td");
@@ -64,7 +77,7 @@ function setAutoRefresh() {
 function renderChart() {
 
   const labels = filteredData.map(item =>
-    new Date(item.timestamp * 1000).toLocaleTimeString()
+    new Date(item.timestamp).toLocaleString()
   );
   const values = filteredData.map(item => item.value);
 
@@ -85,7 +98,7 @@ function renderChart() {
         scales: {
           x: {
             ticks: {
-              color: "white", //white
+              color: "white",
               maxRotation: 0,
               autoSkip: true,
               maxTicksLimit: 6,
@@ -96,9 +109,9 @@ function renderChart() {
           },
           y: {
             beginAtZero: true,
-            grid: { color: "#1f2937" }, //"#1f2937"
+            grid: { color: "#1f2937" },
             ticks: {
-              color: "white", //white
+              color: "white",
               font: {
                 size: 11
               }
@@ -112,7 +125,7 @@ function renderChart() {
             },
             legend: {
               labels: {
-                color: "white", //white
+                color: "white",
                 font: { size: 11 }
               }
             }
@@ -132,7 +145,23 @@ function clearDates() {
   getData();
 }
 
-
 refreshSelect.addEventListener("change", setAutoRefresh);
 
-getData();
+calculationValues.textContent = `Wasserreservoir: Höhe: ${HEIGHT}m | Radius: ${RADIUS}m`;
+
+const { createClient } = supabase;
+client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+client.auth.signOut();
+
+client.auth.signInWithPassword({
+    email: EMAIL,
+    password: PASSWORD
+}).then(({ data, error }) => {
+    if (error) {
+        console.log('Auto-login failed:', error.message);
+    } else {
+        console.log('Auto-logged in:', data.user.email);
+        getData();
+    }
+});
