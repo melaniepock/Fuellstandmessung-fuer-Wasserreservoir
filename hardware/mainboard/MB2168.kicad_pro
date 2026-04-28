@@ -549,6 +549,10 @@
       {
         "netclass": "NC_RF-50R",
         "pattern": "NetL3_1"
+      },
+      {
+        "netclass": "All Nets",
+        "pattern": "GND"
       }
     ]
   },
@@ -869,6 +873,10 @@
     [
       "ed1e140d-b8f7-4bb4-901f-0989715bd101",
       "Designator_1"
+    ],
+    [
+      "23a3609a-eac3-4949-95f9-0ed402459638",
+      "eigeneSchaltungserweiterungen"
     ]
   ],
   "text_variables": {
